@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="How Well do Diffusion Policies Learn Kinematic Constraint Manifolds?">
+  <meta name="keywords" content="Scene Generation, Simulation, Diffusion, MCTS">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="How Well do Diffusion Policies Learn Kinematic Constraint Manifolds?" />
+  <meta property="og:description"
+    content="Generate task-relevant scenes for robotic manipulation with post training, conditional generation, or inference-time search." />
+  <meta property="og:image" content="https://diffusion-learns-kinematic-anon.github.io/static/images/teaser.webp" />
+  <meta property="og:url" content="https://diffusion-learns-kinematic-anon.github.io/" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" type="image/png" href="static/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="static/favicon/favicon.svg" />
+  <link rel="shortcut icon" href="static/favicon/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="static/favicon/apple-touch-icon.png" />
+
+  <title>How Well do Diffusion Policies Learn Kinematic Constraint Manifolds?</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/interactjs/dist/interact.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="./static/slick/slick.css" />
+  <link rel="stylesheet" type="text/css" href="./static/slick/slick-theme.css" />
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@creativebulma/bulma-tooltip@1.2.0/dist/bulma-tooltip.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <style>
+    /* Defaults */
+    video, img, iframe {
+      width: 100%;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Video ratios */
+    .video-16-9 { aspect-ratio: 16 / 9; }
+    .video-16-10 { aspect-ratio: 16 / 10; }
+
+    /* Image ratios */
+    .img-21-9 { aspect-ratio: 24 / 10; }
+    .img-2-1 { aspect-ratio: 2 / 1; }
+    .img-9-2 { aspect-ratio: 9 / 2; }
+    .img-11-5 { aspect-ratio: 11 / 5; }
+    .img-4-3 { aspect-ratio: 4 / 3; }
+  </style>
+
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+  <script src="./static/js/vis.js" defer></script>
+  <script type="text/javascript" src="./static/slick/slick.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Hero Section: Title and Authors -->
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              How Well do Diffusion Policies Learn Kinematic Constraint Manifolds?
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">
+                Anonymous Authors
+              </span>
+            </div>
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <a href="#overview-video" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon"><i class="fab fa-youtube"></i></span>
+                    <span>Video</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="#" class="external-link button is-normal is-rounded is-dark has-tooltip-top"
+                    style="color: gray; pointer-events: auto; cursor: default;" data-tooltip="Coming Soon">
+                    <span class="icon"><i class="fab fa-github"></i></span>
+                    <span>Code</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Method Section -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Our Method</h2>
+          <img src="static/images/teaser.webp" class="img-21-9" alt="Teaser">
+          <p class="has-text-justified">
+            We collect <b>teleoperation data</b> for a constrained bimanual pick-and-place task. Then,
+            we <b>perturb these demonstrations</b> to generate three additional datasets that still accomplish the task,
+            but contain increasing <b>constraint violations</b>. We train a policy on each of these datasets and analyze
+            <b>task success</b> and <b>constraint adherence</b>. Lastly, we collect demonstrations for the same task on
+            <b>hardware</b>, train a policy, and evaluate its performance on similar metrics.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Task -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Task: Constrained Bimanual Pick-And-Place</h2>
+          <div class="columns">
+            <div class="column">
+              <video controls class="video-16-9">
+                <source src="static/videos/rollout.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <p class="has-text-justified">
+                <b>Simulation:</b> We analyze the ability of <b>diffusion policies</b> to learn a <b>kinematic constraint</b> between end effectors, evaluating both <b>task success</b> and <b>constraint adherence</b>.
+              </p>
+            </div>
+            <div class="column">
+              <video controls class="video-16-10">
+                <source src="static/rollouts/18.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <p class="has-text-justified">
+                <b>Hardware:</b> We replicate these efforts on hardware, a real-world application.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task Success: Simulation -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Task Success: Simulation</h2>
+          <img src="static/images/success.png" class="img-2-1" alt="Task Success Simulation">
+          <p class="has-text-justified">
+            This shows the <b>success rates</b> of diffusion policies trained on datasets of different <b>sizes</b> and <b>perturbation levels</b>. Each policy was tested over <b>200 trials</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Task Success: Hardware -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Task Success: Hardware</h2>
+          <img src="static/images/composited.png" class="img-4-3" alt="Hardware Evaluation Distribution">
+          <img src="static/images/hardware_table.png" class="img-9-2" alt="Hardware Task Layout">
+          <p class="has-text-justified">
+            We evaluate the <b>success</b> of hardware diffusion policies trained on the same <b>task</b>.
+            The top image shows the <b>evaluation distribution</b>, and the bottom shows the hardware task layout.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Constraint Adherence -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3">Constraint Adherence</h2>
+          <img src="static/images/constraint_adherence.png" class="img-11-5" alt="Constraint Adherence">
+          <p class="has-text-justified">
+            Here we show how well diffusion policies stick to <b>kinematic constraints</b>. The top tables show the <b>average error</b> in end-effector positions and orientations, while the bottom plots give a sense of how these errors <b>spread</b> across different dataset sizes and perturbations.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teleoperation -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Teleoperation</h2>
+          <p class="has-text-justified">
+            Teleoperation data was collected using a <b>specialized teleoperation setup</b> where the operator had explicit control of the <b>self-motion parameter</b>, providing high-quality demonstrations for training.
+          </p>
+          <video controls class="video-16-9">
+            <source src="static/videos/simulation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <video controls class="video-16-9">
+            <source src="static/videos/hardware.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Data Perturbation -->
+  <section class="section">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column">
+          <h2 class="title is-3">Data Perturbation</h2>
+          <video controls class="video-16-9">
+            <source src="static/videos/perturbation.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class="has-text-justified">
+            To examine how <b>constraint violations</b> affect policy performance, data was regenerated with varying levels of <b>perturbations</b>.
+            This allows us to study effects on both <b>task success</b> and <b>constraint adherence</b>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Overview Video -->
+  <section class="section" id="overview-video">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <h2 class="title is-3">Overview Video</h2>
+          <iframe src="static/videos/fixed.mp4" class="video-16-9" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BibTeX -->
+  <section class="section" id="BibTeX">
+    <div class="container is-max-desktop content">
+      <h2 class="title">BibTeX</h2>
+      In Submission
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This webpage template is from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
