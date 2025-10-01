@@ -36,7 +36,9 @@
 
   <style>
     /* Defaults */
-    video, img, iframe {
+    video,
+    img,
+    iframe {
       width: 100%;
       object-fit: cover;
       display: block;
@@ -44,15 +46,34 @@
     }
 
     /* Video ratios */
-    .video-16-9 { aspect-ratio: 16 / 9; }
-    .video-16-10 { aspect-ratio: 16 / 10; }
+    .video-16-9 {
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-16-10 {
+      aspect-ratio: 16 / 10;
+    }
 
     /* Image ratios */
-    .img-21-9 { aspect-ratio: 24 / 10; }
-    .img-2-1 { aspect-ratio: 2 / 1; }
-    .img-9-2 { aspect-ratio: 9 / 2; }
-    .img-11-5 { aspect-ratio: 11 / 5; }
-    .img-4-3 { aspect-ratio: 4 / 3; }
+    .img-21-9 {
+      aspect-ratio: 24 / 10;
+    }
+
+    .img-2-1 {
+      aspect-ratio: 2 / 1;
+    }
+
+    .img-9-2 {
+      aspect-ratio: 9 / 2;
+    }
+
+    .img-11-5 {
+      aspect-ratio: 11 / 5;
+    }
+
+    .img-4-3 {
+      aspect-ratio: 4 / 3;
+    }
   </style>
 
   <script defer src="./static/js/fontawesome.all.min.js"></script>
@@ -112,6 +133,21 @@
     </div>
   </section>
 
+    <!-- Overview Video -->
+  <section class="section" id="overview-video">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-full-width">
+          <video class="video-16-9" controls>
+            <source src="static/videos/fixed.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Our Method Section -->
   <section class="section">
     <div class="container is-max-desktop">
@@ -121,7 +157,7 @@
           <img src="static/images/teaser.webp" class="img-21-9" alt="Teaser">
           <p class="has-text-justified">
             We collect <b>teleoperation data</b> for a constrained bimanual pick-and-place task. Then,
-            we <b>perturb these demonstrations</b> to generate three additional datasets that still accomplish the task,
+            we <b>perturb end-effector poses</b> via a random noising process to generate three additional datasets that still accomplish the task,
             but contain increasing <b>constraint violations</b>. We train a policy on each of these datasets and analyze
             <b>task success</b> and <b>constraint adherence</b>. Lastly, we collect demonstrations for the same task on
             <b>hardware</b>, train a policy, and evaluate its performance on similar metrics.
@@ -139,7 +175,7 @@
           <h2 class="title is-3">Task: Constrained Bimanual Pick-And-Place</h2>
           <div class="columns">
             <div class="column">
-              <video controls class="video-16-9">
+              <video controls class="video-16-10">
                 <source src="static/videos/rollout.mp4" type="video/mp4">
                 Your browser does not support the video tag.
               </video>
@@ -168,10 +204,11 @@
       <div class="columns is-centered has-text-centered">
         <div class="column">
           <h2 class="title is-3">Task Success: Simulation</h2>
-          <img src="static/images/success.png" class="img-2-1" alt="Task Success Simulation">
           <p class="has-text-justified">
-            This shows the <b>success rates</b> of diffusion policies trained on datasets of different <b>sizes</b> and <b>perturbation levels</b>. Each policy was tested over <b>200 trials</b>.
+            This table shows the <b>success rates</b> of diffusion policies trained on datasets of different <b>sizes</b> and <b>end-effector perturbation levels</b>. Each policy was tested over <b>200 trials</b>. Note that success rates are <b>categorized by different behaviors</b> seen during rollouts:
+             perfect success (green), success with loss of one gripper during transportation (yellow), dropping the box during transportation (orange), and failing to grasp the box (red).
           </p>
+          <img src="static/images/success.png" class="img-2-1" alt="Task Success Simulation">
         </div>
       </div>
     </div>
@@ -181,13 +218,14 @@
   <section class="section">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
-        <div class="column">
+        <div class="column is-three-fifths">
           <h2 class="title is-3">Task Success: Hardware</h2>
           <img src="static/images/composited.png" class="img-4-3" alt="Hardware Evaluation Distribution">
           <img src="static/images/hardware_table.png" class="img-9-2" alt="Hardware Task Layout">
           <p class="has-text-justified">
             We evaluate the <b>success</b> of hardware diffusion policies trained on the same <b>task</b>.
-            The top image shows the <b>evaluation distribution</b>, and the bottom shows the hardware task layout.
+            The top image shows the <b>evaluation distribution</b>, and the bottom shows the evaluation results. Additionally, we record the average
+            error from the desired transform representing the kinematic constraint, with respect to desired <b>position (cm) and orientation (degrees).</b>
           </p>
         </div>
       </div>
@@ -198,16 +236,18 @@
   <section class="section">
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
+        <div class="column is-full-width">
           <h2 class="title is-3">Constraint Adherence</h2>
           <img src="static/images/constraint_adherence.png" class="img-11-5" alt="Constraint Adherence">
           <p class="has-text-justified">
-            Here we show how well diffusion policies stick to <b>kinematic constraints</b>. The top tables show the <b>average error</b> in end-effector positions and orientations, while the bottom plots give a sense of how these errors <b>spread</b> across different dataset sizes and perturbations.
+            Here we show how well the trained diffusion policies adhere to our <b>kinematic constraint</b>. The top tables show the <b>average error</b> in end-effector positions and orientations, while the bottom plots give a sense of how these errors spread across different <b>dataset sizes and perturbation levels</b>.
+            For error, we examine the <b>desired, constraint-satisfying </b> relative transform between the two end-effetors versus the <b>policy-predicted</b> relative transform at the same timestep. Position error is measured by Euclidean distance and orientation error is measured by SO3 rotation distance.
           </p>
         </div>
       </div>
     </div>
   </section>
+
 
   <!-- Teleoperation -->
   <section class="section">
@@ -216,7 +256,7 @@
         <div class="column is-full-width">
           <h2 class="title is-3">Teleoperation</h2>
           <p class="has-text-justified">
-            Teleoperation data was collected using a <b>specialized teleoperation setup</b> where the operator had explicit control of the <b>self-motion parameter</b>, providing high-quality demonstrations for training.
+            Teleoperation data was collected using a <b>specialized teleoperation setup</b> where the operator had explicit control of the <b>self-motion parameter</b>, providing high-quality demonstrations of the bimanual pick-and-place task.
           </p>
           <video controls class="video-16-9">
             <source src="static/videos/simulation.mp4" type="video/mp4">
@@ -236,27 +276,15 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column">
-          <h2 class="title is-3">Data Perturbation</h2>
+          <h2 class="title is-3">End-Effector Perturbation</h2>
+          <p class="has-text-justified">
+            To examine how <b>constraint violations</b> affect policy performance, data was regenerated with varying levels of <b>perturbation</b>.
+            We perturb the relative transform between end-effectors through a random noising process. This strategy allows us to study the effects of constraint violations on both <b>task success</b> and <b>constraint adherence</b>.
+          </p>
           <video controls class="video-16-9">
             <source src="static/videos/perturbation.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
-          <p class="has-text-justified">
-            To examine how <b>constraint violations</b> affect policy performance, data was regenerated with varying levels of <b>perturbations</b>.
-            This allows us to study effects on both <b>task success</b> and <b>constraint adherence</b>.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Overview Video -->
-  <section class="section" id="overview-video">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-full-width">
-          <h2 class="title is-3">Overview Video</h2>
-          <iframe src="static/videos/fixed.mp4" class="video-16-9" allowfullscreen></iframe>
         </div>
       </div>
     </div>
@@ -283,6 +311,48 @@
       </div>
     </div>
   </footer>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const videos = document.querySelectorAll("video");
+
+    // Make sure all videos are muted and playsinline
+    videos.forEach(video => {
+      video.muted = true;
+      video.playsInline = true;
+    });
+
+    // Intersection Observer to play/pause videos as they come into view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+          if (entry.isIntersecting) {
+            video.play().catch(() => {}); // play if possible
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    videos.forEach(video => observer.observe(video));
+
+    // Unlock autoplay on first user interaction
+    function unlockVideos() {
+      videos.forEach(video => video.play().catch(() => {}));
+      document.removeEventListener('click', unlockVideos);
+      document.removeEventListener('touchstart', unlockVideos);
+      document.removeEventListener('scroll', unlockVideos);
+    }
+
+    document.addEventListener('click', unlockVideos);
+    document.addEventListener('touchstart', unlockVideos);
+    document.addEventListener('scroll', unlockVideos);
+  });
+  </script>
+
 
 </body>
 
